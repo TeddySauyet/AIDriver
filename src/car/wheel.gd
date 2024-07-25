@@ -15,9 +15,9 @@ var gravity : float = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 ## state variables
 
-## COM speed, m/s
-var linear_speed : float = 0.0
-## angle of the wheel wrt to the COM velocity (0 = aligned perfectly, radians)
+## wheel velocity, m/s
+var velocity : Vector2 = Vector2.ZERO
+## angle of the wheel wrt to the velocity (0 = aligned perfectly, radians)
 var angle : float = 0.0
 #i think that's all we need.
 ### how fast the wheel is spinning 
@@ -29,11 +29,14 @@ var angle : float = 0.0
 #var friction_mode : FrictionMode = FrictionMode.STATIC
 
 ## returns the current force (not normalized for delta or anything)
-## x is the forward (trunk to hood) direction, and y is transverse direction
 func calculate_response_force(applied_force : Vector2) -> Vector2:
 	var result : Vector2 = Vector2.ZERO
 	
 	#calculate transverse force
 	var normal_force : float = weight * gravity
 	var max_transverse_force : float = static_friction * normal_force
-	if max_transverse_force >= applied_force.y
+	var drifting : bool = max_transverse_force < applied_force.y
+	if drifting:
+		return applied_force - velocity.normalized() * normal_force * kinetic_friction
+	else:
+		var transverse_force = 
