@@ -24,20 +24,26 @@ var angle : float = 0.0
 ## current_velocity (v_forward, v_sideways)
 ## applied torque - positive for driving forward
 ## applied braking is > 0
-func calculate_response_force(velocity : Vector2, 
+func get_response_force(velocity : Vector2, 
 		driving_force : float, applied_braking : float) -> Vector2:
 	var orientation := Vector2(1,0).rotated(angle)
-	var transverse_direction := Vector2(1,0).rotated(90+angle)
-	var transverse_force := velocity.project(transverse_direction)
+	var transverse_direction := Vector2(1,0).rotated(PI/2+angle)
+	var transverse_force := -velocity.project(transverse_direction)
 	var drifting : bool = transverse_force.length() > static_friction*mass*gravity
+	var result := Vector2.ZERO
 	if drifting:
 		var friction := -velocity.normalized() * mass*gravity*kinetic_friction
+		var driving := orientation * driving_force * kinetic_friction
 		#do this later probably
 		#var wheel_inertia_force := orientation * 
-		return friction
+		result = friction + driving
 	else:
-		var friction := -orientation * mass * gravity * rolling_friction
+		var friction := -velocity.project(orientation)*rolling_friction
 		var driving := orientation * driving_force
-		var braking = -orientation * abs(applied_braking)
-		return transverse_force + friction + driving+braking
-	
+		var braking = -orientation * applied_braking
+		if velocity.length() < braking.length():
+			braking = braking.normalized()*velocity.length()
+		#print(transverse_force,'|',friction,'|',driving,'|',braking,'|',velocity)
+		result = transverse_force + friction + driving+braking
+	print(result,'|',velocity, '|',transverse_force,'|',transverse_direction,'|','|',orientation)
+	return result
