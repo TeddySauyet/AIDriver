@@ -6,6 +6,7 @@ var weight : float = 1.0
 
 var driving_force : float = 100
 var braking_force : float = 200
+var direction : float = 0.0 #radians
 
 var turn_angle : float = 45 * PI/180
 
@@ -26,7 +27,11 @@ func _physics_process(delta):
 	var braking = Input.get_action_strength('s') * braking_force
 	var turn = Input.get_axis('a','d')
 	wheel.angle = turn * turn_angle
-	var force = wheel.get_response_force(linear_velocity.rotated(transform.get_rotation()),driving,braking)
-	label.text = str(force)
+	var orientation := Vector2(1,0).rotated(direction)
+	var vel := Vector2(linear_velocity.project(orientation).length(),linear_velocity.project(orientation.rotated(PI/2)).length())
+	var force = wheel.get_response_force(vel,driving,braking)
 	apply_force(force)
-	transform = transform.looking_at(transform.origin + linear_velocity)
+	direction = linear_velocity.angle()
+	label.text = str(direction)
+	
+	#transform = transform.looking_at(transform.origin + linear_velocity)
