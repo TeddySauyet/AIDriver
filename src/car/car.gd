@@ -11,7 +11,7 @@ var braking_force : float = 200
 
 var wasd_turn_angle := 10 * PI/180.0
 
-var drag : float = 0.010
+var drag : float = 0.001
 
 @onready var wheels : Array[Wheel] = [wheel_df,wheel_dl,wheel_pf,wheel_pr]
 
@@ -35,6 +35,7 @@ func _physics_process(delta):
 		var f := wheel.get_response_force(vel_for_wheel,driving,braking)
 		f = f.rotated(transform.x.angle())
 		total_forces.push_back(f)
+	
 	for idx in [0,1,2,3]:
 		apply_force(total_forces[idx],wheels[idx].transform.origin)
 	

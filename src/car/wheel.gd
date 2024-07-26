@@ -9,8 +9,8 @@ extends Node2D
 @export var mass : float = 1.0
 ## friction coefficients
 @export var static_friction : float = 5.0 # >0 because 2D simulation
-@export var rolling_friction : float = 0.01
-@export var kinetic_friction : float = 5.0
+@export var rolling_friction : float = 0.0
+@export var kinetic_friction : float = 10.0
 ## the value of gravity. m/s
 var gravity : float = ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -26,16 +26,16 @@ var angle : float = 0.0
 ## applied torque - positive for driving forward
 ## applied braking is > 0
 func get_response_force(velocity : Vector2, 
-		driving_force : float, applied_braking : float) -> Vector2:
+			driving_force : float, applied_braking : float) -> Vector2:
 	var orientation := Vector2(1,0).rotated(angle)
 	var transverse_direction := Vector2(1,0).rotated(PI/2+angle)
 	var transverse_force := -velocity.project(transverse_direction)*mass
 	var drifting : bool = transverse_force.length() > static_friction*mass*gravity
 	var result := Vector2.ZERO
-	print(angle)
+	print(orientation.angle(),'|',transverse_direction.angle())
 	if drifting:
 		var friction := -velocity.normalized() * mass*gravity*kinetic_friction
-		var driving := orientation * driving_force * kinetic_friction
+		var driving := orientation * driving_force
 		#do this later probably
 		#var wheel_inertia_force := orientation * 
 		result = friction + driving
