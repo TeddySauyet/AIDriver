@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://cjs2mth6xs8ck"]
+
+[ext_resource type="Script" path="res://src/car/car.gd" id="1_8gwus"]
+[ext_resource type="PackedScene" uid="uid://bl6uktmivykty" path="res://src/car/wheel.tscn" id="2_olv8x"]
+[ext_resource type="Texture2D" uid="uid://byqne3cqno5s1" path="res://icon.svg" id="3_x6jew"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8x0l0"]
+size = Vector2(40, 20)
+
+[node name="Car" type="RigidBody2D"]
+mass = 4.0
+gravity_scale = 0.0
+script = ExtResource("1_8gwus")
+
+[node name="Wheel_DF" parent="." instance=ExtResource("2_olv8x")]
+unique_name_in_owner = true
+position = Vector2(20, -10)
+
+[node name="Wheel_DR" parent="." instance=ExtResource("2_olv8x")]
+unique_name_in_owner = true
+position = Vector2(-20, -10)
+
+[node name="Wheel_PF" parent="." instance=ExtResource("2_olv8x")]
+unique_name_in_owner = true
+position = Vector2(20, 10)
+
+[node name="Wheel_PR" parent="." instance=ExtResource("2_olv8x")]
+unique_name_in_owner = true
+position = Vector2(-20, 10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_8x0l0")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.31, 0.155)
+texture = ExtResource("3_x6jew")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(21, 0)
+scale = Vector2(0.087, 0.32)
+texture = ExtResource("3_x6jew")
