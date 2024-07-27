@@ -2,18 +2,21 @@ class_name Car
 extends RigidBody2D
 
 @onready var wheel_df : Wheel = %Wheel_DF
-@onready var wheel_dl : Wheel = %Wheel_DR
+@onready var wheel_dr : Wheel = %Wheel_DR
 @onready var wheel_pf : Wheel = %Wheel_PF
 @onready var wheel_pr : Wheel = %Wheel_PR
 
 var driving_force : float = 100
 var braking_force : float = 200
 
-var wasd_turn_angle := 10 * PI/180.0
+var wasd_turn_angle := 20 * PI/180.0
 
 var drag : float = 0.001
 
-@onready var wheels : Array[Wheel] = [wheel_df,wheel_dl,wheel_pf,wheel_pr]
+@onready var wheels : Array[Wheel] = [wheel_df,wheel_dr,wheel_pf,wheel_pr]
+@onready var front_wheels : Array[Wheel] = [wheel_df,wheel_pf]
+@onready var back_wheels : Array[Wheel] = [wheel_dr,wheel_pr]
+
 
 
 func _physics_process(delta):
@@ -25,19 +28,25 @@ func _physics_process(delta):
 	var vel_for_wheel = linear_velocity.rotated(-transform.x.angle())
 	
 	var total_forces = []
-	
-	%Wheel_DF.angle = turn * wasd_turn_angle
-	%Wheel_PF.angle = turn * wasd_turn_angle
-	
+	var locations = []
 	#print(turn)
 	
-	for wheel in wheels:
+	for wheel in front_wheels:
+		wheel.angle = turn * wasd_turn_angle
+		var f := wheel.get_response_force(vel_for_wheel,0.0,braking)
+		f = f.rotated(transform.x.angle())
+		total_forces.push_back(f)
+		locations.push_back(wheel.transform.origin)
+	
+	for wheel in back_wheels:
 		var f := wheel.get_response_force(vel_for_wheel,driving,braking)
 		f = f.rotated(transform.x.angle())
 		total_forces.push_back(f)
+		locations.push_back(wheel.transform.origin)
+		
 	
 	for idx in [0,1,2,3]:
-		apply_force(total_forces[idx],wheels[idx].transform.origin)
+		apply_force(total_forces[idx],locations[idx])
 	
 	apply_force(-linear_velocity.normalized()*drag*linear_velocity.length_squared())
 	#apply_torque(10)
