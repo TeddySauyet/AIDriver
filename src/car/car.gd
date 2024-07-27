@@ -36,21 +36,24 @@ func _physics_process(delta):
 		var f := wheel.get_response_force(vel_for_wheel,0.0,braking)
 		f = f.rotated(transform.x.angle())
 		total_forces.push_back(f)
-		locations.push_back(wheel.transform.origin)
+		locations.push_back(wheel.global_position - global_position)
 	
 	for wheel in back_wheels:
 		var f := wheel.get_response_force(vel_for_wheel,driving,braking)
 		f = f.rotated(transform.x.angle())
 		total_forces.push_back(f)
-		locations.push_back(wheel.transform.origin)
-		
+		locations.push_back(wheel.global_position - global_position)
+	
+	var s = '|'
+	for f in total_forces:
+		s = s + str(f.angle()*180/PI) + ',' + str(f.length()) + '|'
+	#print(transform.x.angle()*180/PI,'|',linear_velocity.angle()*180/PI,s)
 	
 	for idx in [0,1,2,3]:
 		apply_force(total_forces[idx],locations[idx])
 	
-	apply_force(-linear_velocity.normalized()*drag*linear_velocity.length_squared())
+	#apply_force(-linear_velocity.normalized()*drag*linear_velocity.length_squared())
 	#apply_torque(10)
 	#transform = transform.rotated_local(0.01)
 	#print(transform)
 	#print(angular_velocity)
-	print(transform.x.angle(),'|',linear_velocity.angle())
