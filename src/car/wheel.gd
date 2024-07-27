@@ -8,9 +8,10 @@ extends Node2D
 ## the mass in kg pushing down on this wheel (straight down)
 @export var mass : float = 1.0
 ## friction coefficients
-@export var static_friction : float = 5.0 # >0 because 2D simulation
-@export var rolling_friction : float = 0.0
+@export var static_friction : float = 20.0 # >0 because 2D simulation
+@export var rolling_friction : float = 1
 @export var kinetic_friction : float = 10.0
+@export var drift_portion_drive_force : float = 0.5
 ## the value of gravity. m/s
 var gravity : float = ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -28,6 +29,11 @@ var angle : float = 0.0
 func _process(delta: float) -> void:
 	$Sprite2D.rotation = angle
 
+func _ready() -> void:
+	$Sprite2D.texture = GradientTexture1D.new()
+	$Sprite2D.texture.gradient = Gradient.new()
+	$Sprite2D.texture.width = 16
+
 func get_response_force(velocity : Vector2, 
 			driving_force : float, applied_braking : float) -> Vector2:
 	var orientation := Vector2(1,0).rotated(angle)
@@ -39,11 +45,12 @@ func get_response_force(velocity : Vector2,
 	#print(orientation.angle(),'|',transverse_force.angle())
 	if drifting:
 		var friction := -velocity.normalized() * mass*gravity*kinetic_friction
-		var driving := orientation * driving_force
+		var driving := orientation * driving_force * drift_portion_drive_force
 		#do this later probably
 		#var wheel_inertia_force := orientation * 
 		result = friction + driving
-		print('drifting')
+		#print('drifting')
+		$Sprite2D.texture.gradient.colors = PackedColorArray([Color(0,0,0), Color(1,0,0)])
 	else:
 		var friction := -velocity.project(orientation)*rolling_friction
 		var driving := orientation * driving_force
@@ -54,5 +61,7 @@ func get_response_force(velocity : Vector2,
 		#print(transverse_force,'|',friction,'|',driving,'|',braking,'|',velocity)
 		result = transverse_force + friction + driving + braking
 		tire_speed = velocity.length()
+		$Sprite2D.texture.gradient.colors = PackedColorArray([Color(0,0,0), Color(1,1,1)])
+		#print('not drifting')
 	#print(result,'|',velocity, '|',transverse_force,'|',transverse_direction,'|','|',orientation)
 	return result

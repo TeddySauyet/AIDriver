@@ -6,18 +6,16 @@ extends RigidBody2D
 @onready var wheel_pf : Wheel = %Wheel_PF
 @onready var wheel_pr : Wheel = %Wheel_PR
 
-var driving_force : float = 100
-var braking_force : float = 200
+var driving_force : float = 20000
+var braking_force : float = 200000
 
 var wasd_turn_angle := 20 * PI/180.0
 
-var drag : float = 0.001
+var drag : float = 0.1
 
 @onready var wheels : Array[Wheel] = [wheel_df,wheel_dr,wheel_pf,wheel_pr]
 @onready var front_wheels : Array[Wheel] = [wheel_df,wheel_pf]
 @onready var back_wheels : Array[Wheel] = [wheel_dr,wheel_pr]
-
-
 
 func _physics_process(delta):
 	var driving = Input.get_action_strength('w') * driving_force
@@ -32,6 +30,7 @@ func _physics_process(delta):
 	#print(turn)
 	
 	for wheel in front_wheels:
+		wheel.mass = mass/4
 		wheel.angle = turn * wasd_turn_angle
 		var f := wheel.get_response_force(vel_for_wheel,0.0,braking)
 		f = f.rotated(transform.x.angle())
@@ -39,6 +38,7 @@ func _physics_process(delta):
 		locations.push_back(wheel.global_position - global_position)
 	
 	for wheel in back_wheels:
+		wheel.mass = mass/4
 		var f := wheel.get_response_force(vel_for_wheel,driving,braking)
 		f = f.rotated(transform.x.angle())
 		total_forces.push_back(f)
