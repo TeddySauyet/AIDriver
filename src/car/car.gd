@@ -53,4 +53,4 @@ func _physics_process(delta):
 	#transform = transform.rotated_local(0.01)
 	#print(transform)
 	#print(angular_velocity)
-	print(transform.x.angle())
+	print(transform.x.angle(),'|',linear_velocity.angle())
