@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=3 uid="uid://cvmhnxdqo2gwp"]
+
+[ext_resource type="Shader" path="res://src/car/visualization/2d/background_single_car_2d.gdshader" id="1_1qnc7"]
+[ext_resource type="Texture2D" uid="uid://byqne3cqno5s1" path="res://icon.svg" id="2_yqbch"]
+
+[sub_resource type="Gradient" id="Gradient_seg2o"]
+offsets = PackedFloat32Array(0.77459, 1)
+colors = PackedColorArray(0.366595, 0.366595, 0.366595, 1, 0.589096, 0.589096, 0.589096, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_t25g4"]
+gradient = SubResource("Gradient_seg2o")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xg17l"]
+shader = ExtResource("1_1qnc7")
+shader_parameter/world_pos = Vector2(32, 0)
+shader_parameter/n_repeats = 50.0
+shader_parameter/base_texture_size = 64.0
+shader_parameter/base_texture = SubResource("GradientTexture2D_t25g4")
+
+[node name="BackgroundSingleCar2d" type="Sprite2D"]
+material = SubResource("ShaderMaterial_xg17l")
+scale = Vector2(40, 40)
+texture = ExtResource("2_yqbch")

@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://cw7gelntenj7n"]
+[gd_scene load_steps=6 format=3 uid="uid://cw7gelntenj7n"]
 
 [ext_resource type="PackedScene" uid="uid://cjs2mth6xs8ck" path="res://src/car/car.tscn" id="1_4kday"]
+[ext_resource type="PackedScene" uid="uid://cvmhnxdqo2gwp" path="res://src/car/visualization/2d/background_single_car_2d.tscn" id="1_i0e6l"]
 [ext_resource type="PackedScene" uid="uid://b5ls6vg1ogfmn" path="res://src/car/visualization/2d/car_visualization_2d.tscn" id="2_siks5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2tdey"]
@@ -10,6 +11,9 @@ size = Vector2(2000, 50)
 size = Vector2(50, 1150)
 
 [node name="EmptyRoomTest" type="Node2D"]
+
+[node name="BackgroundSingleCar2d" parent="." instance=ExtResource("1_i0e6l")]
+position = Vector2(960, 540)
 
 [node name="Car" parent="." instance=ExtResource("1_4kday")]
 position = Vector2(123, 428)
