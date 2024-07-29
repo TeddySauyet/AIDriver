@@ -10,7 +10,7 @@ extends Node2D
 ## friction coefficients
 @export var static_friction : float = 20.0 # >0 because 2D simulation
 @export var rolling_friction : float = 1
-@export var kinetic_friction : float = 10.0
+@export var kinetic_friction : float = 1.0
 @export var drift_portion_drive_force : float = 0.5
 ## the value of gravity. m/s
 var gravity : float = ProjectSettings.get_setting("physics/2d/default_gravity")

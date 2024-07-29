@@ -10,8 +10,10 @@ func _process(delta: float) -> void:
 	else:
 		texture.gradient.colors = PackedColorArray([Color(0,0,0), Color(1,1,1)])
 	transform = wheel.transform
+	scale = Vector2(1,7)
 
 func _ready() -> void:
 	texture = GradientTexture1D.new()
 	texture.gradient = Gradient.new()
 	texture.width = 16
+	scale = Vector2(1,7)

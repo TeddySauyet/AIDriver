@@ -9,7 +9,5 @@ gradient = SubResource("Gradient_b2yit")
 width = 16
 
 [node name="wheel_visualization_2d" type="Sprite2D"]
-position = Vector2(0, -0.5)
-scale = Vector2(1, 20)
 texture = SubResource("GradientTexture1D_af65r")
 script = ExtResource("1_oqdb8")
