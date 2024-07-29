@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/car/car.gd" id="1_8gwus"]
 [ext_resource type="PackedScene" uid="uid://bl6uktmivykty" path="res://src/car/wheel.tscn" id="2_olv8x"]
-[ext_resource type="Texture2D" uid="uid://byqne3cqno5s1" path="res://icon.svg" id="3_x6jew"]
+[ext_resource type="PackedScene" uid="uid://b5ls6vg1ogfmn" path="res://src/car/car_visualization_2d.tscn" id="3_c72rj"]
 
 [sub_resource type="Gradient" id="Gradient_b2yit"]
 
@@ -65,14 +65,7 @@ texture = SubResource("GradientTexture1D_fkapw")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_8x0l0")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.31, 0.155)
-texture = ExtResource("3_x6jew")
-
-[node name="Sprite2D2" type="Sprite2D" parent="."]
-position = Vector2(19, -0.5)
-scale = Vector2(0.125, 0.0703125)
-texture = ExtResource("3_x6jew")
+[node name="car_visualization_2d" parent="." instance=ExtResource("3_c72rj")]
 
 [editable path="Wheel_DF"]
 [editable path="Wheel_DR"]

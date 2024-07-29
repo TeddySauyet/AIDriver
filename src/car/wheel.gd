@@ -21,18 +21,13 @@ var gravity : float = ProjectSettings.get_setting("physics/2d/default_gravity")
 var tire_speed : float = 0.0 #not implemented yet
 ## angle of the wheel wrt to the velocity (0 = aligned perfectly, radians)
 var angle : float = 0.0
-
+##are we drifiting
+var drifting : bool = false
 ## returns the current force (not normalized for delta or anything)
 ## current_velocity (v_forward, v_sideways)
 ## applied torque - positive for driving forward
 ## applied braking is > 0
-func _process(delta: float) -> void:
-	$Sprite2D.rotation = angle
 
-func _ready() -> void:
-	$Sprite2D.texture = GradientTexture1D.new()
-	$Sprite2D.texture.gradient = Gradient.new()
-	$Sprite2D.texture.width = 16
 
 func get_response_force(velocity : Vector2, 
 			driving_force : float, applied_braking : float) -> Vector2:
@@ -40,7 +35,7 @@ func get_response_force(velocity : Vector2,
 	var transverse_direction := Vector2(1,0).rotated(PI/2+angle)
 	var transverse_force := -velocity.project(transverse_direction)*mass
 	#var transverse_force := orientation*velocity.length() - velocity
-	var drifting : bool = transverse_force.length() > static_friction*mass*gravity
+	drifting = transverse_force.length() > static_friction*mass*gravity
 	var result := Vector2.ZERO
 	#print(orientation.angle(),'|',transverse_force.angle())
 	if drifting:
@@ -50,7 +45,6 @@ func get_response_force(velocity : Vector2,
 		#var wheel_inertia_force := orientation * 
 		result = friction + driving
 		#print('drifting')
-		$Sprite2D.texture.gradient.colors = PackedColorArray([Color(0,0,0), Color(1,0,0)])
 	else:
 		var friction := -velocity.project(orientation)*rolling_friction
 		var driving := orientation * driving_force
@@ -61,7 +55,6 @@ func get_response_force(velocity : Vector2,
 		#print(transverse_force,'|',friction,'|',driving,'|',braking,'|',velocity)
 		result = transverse_force + friction + driving + braking
 		tire_speed = velocity.length()
-		$Sprite2D.texture.gradient.colors = PackedColorArray([Color(0,0,0), Color(1,1,1)])
 		#print('not drifting')
 	#print(result,'|',velocity, '|',transverse_force,'|',transverse_direction,'|','|',orientation)
 	return result
