@@ -1,4 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://dtttd4u1cf1g4"]
+[gd_scene load_steps=4 format=3 uid="uid://dtttd4u1cf1g4"]
+
+[ext_resource type="Script" path="res://src/car/wheel_visualization_2d.gd" id="1_oqdb8"]
 
 [sub_resource type="Gradient" id="Gradient_b2yit"]
 
@@ -6,7 +8,8 @@
 gradient = SubResource("Gradient_b2yit")
 width = 16
 
-[node name="Sprite2D" type="Sprite2D"]
+[node name="wheel_visualization_2d" type="Sprite2D"]
 position = Vector2(0, -0.5)
-scale = Vector2(1, 7)
+scale = Vector2(1, 20)
 texture = SubResource("GradientTexture1D_af65r")
+script = ExtResource("1_oqdb8")
