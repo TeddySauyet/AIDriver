@@ -14,4 +14,4 @@ func _process(delta):
 	background.material.set_shader_parameter("world_pos", car.position)
 	background.position = car.position
 	#background.rotat
-	print(car.position)
+	#print(car.position)
