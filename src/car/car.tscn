@@ -6,9 +6,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8x0l0"]
 size = Vector2(40, 20)
 
-[node name="Car" type="RigidBody2D"]
-mass = 400.0
-gravity_scale = 0.0
+[node name="Car" type="CharacterBody2D"]
 script = ExtResource("1_8gwus")
 
 [node name="Wheel_DF" parent="." instance=ExtResource("2_olv8x")]

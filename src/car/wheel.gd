@@ -51,8 +51,8 @@ func get_response_force(velocity : Vector2,
 		var friction := -velocity.project(orientation)*rolling_friction
 		var driving := orientation * driving_force
 		var braking := -orientation * applied_braking
-		if velocity.length() < braking.length():
-			braking = braking.normalized()*velocity.length()
+		if velocity.length() < braking.length()*mass:
+			braking = braking.normalized()*velocity.length()*mass
 		#print(velocity,'|',braking,'|',driving)
 		#print(transverse_force,'|',friction,'|',driving,'|',braking,'|',velocity)
 		result = transverse_force + friction + driving + braking
