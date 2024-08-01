@@ -23,14 +23,16 @@ var tire_speed : float = 0.0 #not implemented yet
 var angle : float = 0.0
 ##are we drifiting
 var drifting : bool = false
+
+var forced_velocity : Vector2 = Vector2.ZERO
+
 ## returns the current force (not normalized for delta or anything)
 ## current_velocity (v_forward, v_sideways)
 ## applied torque - positive for driving forward
 ## applied braking is > 0
-
-
 func get_response_force(velocity : Vector2, 
 			driving_force : float, applied_braking : float) -> Vector2:
+	forced_velocity = velocity
 	var orientation := Vector2(1,0).rotated(angle)
 	var transverse_direction := Vector2(1,0).rotated(PI/2+angle)
 	var transverse_force := -velocity.project(transverse_direction)*mass
