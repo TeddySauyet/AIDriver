@@ -8,8 +8,8 @@ extends CharacterBody2D
 
 var driving_force : float = 20000
 var braking_force : float = 200000
-var mass = 40000.0
-var angular_inertia = 400.0
+var mass = 400.0
+var angular_inertia = 40000.0
 
 var wasd_turn_angle := 20 * PI/180.0
 
@@ -31,8 +31,8 @@ func _physics_process(delta):
 	
 	var vel_for_wheel = linear_velocity.rotated(-transform.x.angle())
 	
-	var total_forces = []
-	var locations = []
+	var total_forces : Array[Vector2] = []
+	var locations: Array[Vector2] = []
 	#print(turn)
 	
 	#print(angular_velocity,linear_velocity)
@@ -67,8 +67,15 @@ func _physics_process(delta):
 	for idx in [0,1,2,3]:
 		#apply_force(total_forces[idx],locations[idx])
 		total_force += total_forces[idx]
-		total_torque += total_forces[idx].project(locations[idx].rotated(PI/2)).length()
+		var ortho_dir : Vector2 = locations[idx].rotated(PI/2)
+		var ortho_force : Vector2 = total_forces[idx].project(ortho_dir)
+		var t : float = ortho_force.length() * sign(ortho_force.dot(ortho_dir))
+		total_torque += t
+		print(idx,':',t,'|',locations[idx],total_forces[idx],locations[idx].rotated(PI/2),total_forces[idx].project(locations[idx].rotated(PI/2)),total_forces[idx].project(locations[idx].rotated(PI/2)).length())
+		
 	
+	if total_torque != 0:
+		pass
 	rotation += total_torque/angular_inertia
 	linear_velocity += total_force/mass*delta
 	move_and_collide(linear_velocity*delta)
