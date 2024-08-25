@@ -71,7 +71,7 @@ func _physics_process(delta):
 		var ortho_force : Vector2 = total_forces[idx].project(ortho_dir)
 		var t : float = ortho_force.length() * sign(ortho_force.dot(ortho_dir))
 		total_torque += t
-		print(idx,':',t,'|',locations[idx],total_forces[idx],locations[idx].rotated(PI/2),total_forces[idx].project(locations[idx].rotated(PI/2)),total_forces[idx].project(locations[idx].rotated(PI/2)).length())
+		#print(idx,':',t,'|',locations[idx],total_forces[idx],locations[idx].rotated(PI/2),total_forces[idx].project(locations[idx].rotated(PI/2)),total_forces[idx].project(locations[idx].rotated(PI/2)).length())
 		
 	
 	if total_torque != 0:
